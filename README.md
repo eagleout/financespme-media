@@ -28,9 +28,20 @@ Site statique HTML/CSS/JS conçu pour un déploiement Vercel.
 - Responsive mobile
 - En-têtes de sécurité Vercel
 
+## Formulaires et newsletter
+Les formulaires utilisent maintenant des fonctions serverless Vercel et l’API Resend.
+
+Variables d’environnement à renseigner dans Vercel :
+- `RESEND_API_KEY`
+- `CONTACT_TO_EMAIL` — adresse qui reçoit les demandes
+- `CONTACT_FROM_EMAIL` — expéditeur vérifié dans Resend
+- `RESEND_AUDIENCE_ID` — audience utilisée pour Le Brief FinancesPME
+
+Les formulaires incluent validation côté serveur, champ anti-bot honeypot, messages de statut et consentement explicite pour la newsletter.
+
 ## À finaliser avant mise en production
 1. Informations légales définitives de l’entité éditrice.
-2. Backend des formulaires de contact et de la newsletter (le prototype utilise actuellement `mailto:`).
+2. Renseigner les variables d’environnement Resend ci-dessus.
 3. Analytics et CMP uniquement si des traceurs non essentiels sont ajoutés.
 4. Vérification Google Search Console / Bing Webmaster Tools.
 5. Publication régulière de contenus datés, vérifiés et sourcés.
