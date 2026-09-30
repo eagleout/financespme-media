@@ -6,7 +6,6 @@ const json = (res, status, body) => {
 
 const clean = (value, max = 500) => String(value ?? '').trim().slice(0, max);
 const validEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) && email.length <= 254;
-const NEWSLETTER_SEGMENT_ID = process.env.RESEND_NEWSLETTER_SEGMENT_ID || 'f5b9c72d-0120-447b-ab1f-a898cd048dc7';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -28,31 +27,31 @@ export default async function handler(req, res) {
     return json(res, 503, { error: 'Service newsletter non configuré.' });
   }
 
-  const headers = {
-    Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-    'Content-Type': 'application/json'
-  };
+  const to = process.env.CONTACT_TO || 'contact@financementspme.fr';
+  const from = process.env.CONTACT_FROM || 'FinancesPME <contact@financementspme.fr>';
 
   try {
-    const createContact = await fetch('https://api.resend.com/contacts', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
-      headers,
-      body: JSON.stringify({ email, unsubscribed: false })
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        subject: '[FinancesPME] Nouvelle inscription au Brief',
+        text: `Nouvelle inscription au Brief FinancesPME : ${email}\nConsentement newsletter : oui`,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.55;color:#0B1F33"><h2>Nouvelle inscription — Le Brief FinancesPME</h2><p><strong>E-mail :</strong> ${email.replace(/[<>&"']/g, '')}</p><p><strong>Consentement :</strong> oui</p></div>`,
+        tags: [
+          { name: 'source', value: 'financespme' },
+          { name: 'form', value: 'newsletter' }
+        ]
+      })
     });
 
-    // Un contact peut déjà exister : on tente quand même son rattachement au segment.
-    if (!createContact.ok && createContact.status !== 409 && createContact.status !== 422) {
-      console.error('Resend contact error', createContact.status, await createContact.text());
-      return json(res, 502, { error: 'Inscription momentanément indisponible.' });
-    }
-
-    const addToSegment = await fetch(
-      `https://api.resend.com/contacts/${encodeURIComponent(email)}/segments/${NEWSLETTER_SEGMENT_ID}`,
-      { method: 'POST', headers }
-    );
-
-    if (!addToSegment.ok && addToSegment.status !== 409) {
-      console.error('Resend segment error', addToSegment.status, await addToSegment.text());
+    if (!response.ok) {
+      console.error('Resend newsletter error', response.status, await response.text());
       return json(res, 502, { error: 'Inscription momentanément indisponible.' });
     }
 
