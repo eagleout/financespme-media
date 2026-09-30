@@ -1,0 +1,19 @@
+# FinancesPME.fr
+
+> Le média financier des dirigeants de PME : banques, financement, trésorerie, croissance, transmission et pilotage financier.
+
+## Sections principales
+- https://financespme.fr/financement/ : financement des PME
+- https://financespme.fr/tresorerie/ : trésorerie et BFR
+- https://financespme.fr/banques/ : banques et entreprises
+- https://financespme.fr/strategie/ : croissance externe, acquisition, cession et valorisation
+- https://financespme.fr/outils/ : calculateurs financiers
+- https://financespme.fr/lexique/ : définitions de finance d’entreprise
+- https://financespme.fr/consulting/ : accompagnement financier
+
+## Politique éditoriale
+- https://financespme.fr/politique-editoriale/
+- https://financespme.fr/methodologie/
+
+## Utilisation
+Les contenus visent à informer les dirigeants de PME. Ils ne remplacent pas un conseil juridique, fiscal ou comptable personnalisé.
