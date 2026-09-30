@@ -20,26 +20,40 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rebuild site archive
-        shell: bash
-        run: |
-          set -euo pipefail
-          cat bundle/part{01..17}.b64 > /tmp/financespme-site.b64
-          base64 --decode /tmp/financespme-site.b64 > /tmp/financespme-site.zip
-          unzip -t /tmp/financespme-site.zip
-          unzip -oq /tmp/financespme-site.zip -d .
-          rm -rf bundle
-
-      - name: Commit extracted site
+      - name: Publish extracted site
         shell: bash
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A
-          if git diff --cached --quiet; then
-            echo "No changes to commit."
-            exit 0
-          fi
-          git commit -m "Publish complete FinancesPME static site"
-          git push
+
+          for attempt in 1 2 3 4 5; do
+            echo "Publish attempt $attempt"
+            git fetch origin main
+            git reset --hard origin/main
+
+            cat bundle/part{01..17}.b64 > /tmp/financespme-site.b64
+            base64 --decode /tmp/financespme-site.b64 > /tmp/financespme-site.zip
+            unzip -t /tmp/financespme-site.zip
+            unzip -oq /tmp/financespme-site.zip -d .
+            rm -rf bundle
+
+            git add -A
+            if git diff --cached --quiet; then
+              echo "Site already published."
+              exit 0
+            fi
+
+            git commit -m "Publish complete FinancesPME static site"
+
+            if git push origin HEAD:main; then
+              echo "Site published successfully."
+              exit 0
+            fi
+
+            echo "Remote changed while publishing; retrying from latest main."
+            sleep 4
+          done
+
+          echo "Could not publish after multiple attempts."
+          exit 1
