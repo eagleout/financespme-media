@@ -14,3 +14,95 @@
 .page-hero-media,.article-cover{isolation:isolate}
 @media(max-width:980px){.page-hero .page-hero-rich{grid-template-columns:1fr}.page-hero-media{height:260px;max-height:none}}
 @media(max-width:720px){.page-hero-media{height:210px;border-radius:16px}.article-cover{height:220px;border-radius:16px;margin-top:22px}}
+
+/* Button readability fix inside editorial content */
+.btn,
+.btn:link,
+.btn:visited{
+  text-decoration:none!important;
+}
+
+.btn-primary,
+.btn-primary:link,
+.btn-primary:visited,
+.prose .btn-primary,
+.prose .btn-primary:link,
+.prose .btn-primary:visited,
+.callout .btn-primary,
+.callout .btn-primary:link,
+.callout .btn-primary:visited,
+.mini-cta .btn-primary,
+.mini-cta .btn-primary:link,
+.mini-cta .btn-primary:visited{
+  background:var(--navy)!important;
+  color:#fff!important;
+  border-color:var(--navy)!important;
+  text-decoration:none!important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus-visible,
+.prose .btn-primary:hover,
+.prose .btn-primary:focus-visible,
+.callout .btn-primary:hover,
+.callout .btn-primary:focus-visible,
+.mini-cta .btn-primary:hover,
+.mini-cta .btn-primary:focus-visible{
+  background:#14324a!important;
+  color:#fff!important;
+  border-color:#14324a!important;
+  text-decoration:none!important;
+}
+
+.btn-outline,
+.btn-outline:link,
+.btn-outline:visited,
+.prose .btn-outline,
+.prose .btn-outline:link,
+.prose .btn-outline:visited,
+.callout .btn-outline,
+.callout .btn-outline:link,
+.callout .btn-outline:visited,
+.mini-cta .btn-outline,
+.mini-cta .btn-outline:link,
+.mini-cta .btn-outline:visited{
+  background:#fff!important;
+  color:var(--navy)!important;
+  border:2px solid var(--navy)!important;
+  text-decoration:none!important;
+}
+
+.btn-outline:hover,
+.btn-outline:focus-visible,
+.prose .btn-outline:hover,
+.prose .btn-outline:focus-visible,
+.callout .btn-outline:hover,
+.callout .btn-outline:focus-visible,
+.mini-cta .btn-outline:hover,
+.mini-cta .btn-outline:focus-visible{
+  background:var(--navy)!important;
+  color:#fff!important;
+  border-color:var(--navy)!important;
+  text-decoration:none!important;
+}
+
+.prose .hero-actions .btn,
+.callout .hero-actions .btn{
+  min-width:190px;
+  min-height:48px;
+  padding:0 22px;
+  font-weight:800;
+}
+
+@media(max-width:640px){
+  .prose .hero-actions,
+  .callout .hero-actions{
+    flex-direction:column;
+    align-items:stretch;
+  }
+  .prose .hero-actions .btn,
+  .callout .hero-actions .btn{
+    width:100%;
+    min-width:0;
+  }
+}
