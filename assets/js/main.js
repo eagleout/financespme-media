@@ -40,5 +40,18 @@
       }
     });
   });
-  const banner=document.querySelector('[data-cookie-banner]'); const ok=document.querySelector('[data-cookie-ok]'); if(banner&&!localStorage.getItem('fpm_cookie_notice'))banner.hidden=false; if(ok)ok.addEventListener('click',()=>{localStorage.setItem('fpm_cookie_notice','1');banner.hidden=true;});
+  const banner=document.querySelector('[data-cookie-banner]'), ok=document.querySelector('[data-cookie-ok]'), cookieKey='fpm_cookie_notice';
+  if(banner){
+    let accepted=false;
+    try{accepted=localStorage.getItem(cookieKey)==='1';}catch(_){}
+    banner.hidden=accepted;
+    if(!accepted) banner.hidden=false;
+  }
+  if(ok&&banner){
+    ok.addEventListener('click',()=>{
+      try{localStorage.setItem(cookieKey,'1');}catch(_){}
+      banner.classList.add('is-hiding');
+      window.setTimeout(()=>{banner.hidden=true;banner.classList.remove('is-hiding');},210);
+    });
+  }
 })();
